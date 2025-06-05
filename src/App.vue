@@ -1,47 +1,76 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
-</script>
+    <script setup>
+    import { ref, computed } from 'vue';
+    
+    const numero1 = ref(0);
+    const numero2 = ref(0);
+    const operacao = ref('soma');
+    
+    const resultado = computed(() => {
+      switch(operacao.value) {
+        case 'soma':
+          return numero1.value + numero2.value;
+        case 'subtracao':
+          return numero1.value - numero2.value;
+        case 'multiplicacao':
+          return numero1.value * numero2.value;
+        case 'divisao':
+          return numero2.value !== 0 
+            ? (numero1.value / numero2.value).toFixed(2) 
+            : 'Erro: divisão por zero';
+        default:
+          return 0;
+      }
+    });
+    </script>
+
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+  <div class="calculadora">
+    <h1>Calcule com VueJS</h1>
+    
+    <div class="inputs">
+      <input type="number" v-model.number="numero1" placeholder="Primeiro número">
+      <select v-model="operacao">
+        <option value="soma">+</option>
+        <option value="subtracao">-</option>
+        <option value="multiplicacao">×</option>
+        <option value="divisao">÷</option>
+      </select>
+      <input type="number" v-model.number="numero2" placeholder="Segundo número">
     </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+    <div class="resultado">
+      <h2>Resultado: {{ resultado }}</h2>
+    </div>
+  </div>
 </template>
 
+
 <style scoped>
-header {
-  line-height: 1.5;
+.calculadora {
+  max-width: 500px;
+  margin: 200px auto;
+  padding: 20px;
+  text-align: center;
+  border: 1px solid #000000;
+  border-radius: 24px;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+.inputs {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0;
 }
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
+input, select {
+  padding: 8px;
+  font-size: 16px;
+}
 
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+.resultado {
+  margin-top: 20px;
+  font-size: 18px;
+  color: #000000;
 }
 </style>
